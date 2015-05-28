@@ -36,10 +36,24 @@
 
 (defqueries "sql/queries.sql" {:connection db-spec})
 
-(defn getbigscreendata [sortnum time]
+(defn getbigscreendata [linenos time]
 
   (with-db db-sqlserver
-    (exec-raw ["select  * from si_sort where stateflag=? and sortno>? and checkdt>=? order by sortno " ["rd" sortnum time]] :results)
+    (exec-raw ["select  * from si_sort where stateflag=? and linenos>? and checkdt>=? order by linenos " ["rd" linenos time]] :results)
+    )
+
+  )
+(defn getroomdata [roomno time]
+
+  (with-db db-sqlserver
+    (exec-raw ["select top 3 * from si_sort where stateflag in (?,?) and roomno=? and checkdt>=? order by linenos " ["ca" "rd" roomno  time]] :results)
+    )
+
+  )
+
+(defn getbigscreenpasseddata [linenos time]
+  (with-db db-sqlserver
+    (exec-raw ["select  * from si_sort where stateflag=? and linenos>? and checkdt>=? order by linenos " ["la" linenos time]] :results)
     )
 
   )

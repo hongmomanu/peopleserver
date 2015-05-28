@@ -14,11 +14,20 @@
 
 (defroutes home-routes
   (GET "/" [] (home-page))
-  (GET "/getbigscreendata" [sortno] (home/getbigscreendata sortno))
+  (GET "/getbigscreendata" [linenos] (home/getbigscreendata linenos))
+  (GET "/getbigscreenpasseddata" [linenos] (home/getbigscreenpasseddata linenos))
   (GET "/maketexttopinyin" [text] (home/maketexttopinyin text))
+
+
 
   (GET "/loadDataFire" [roomno]
     (home/loadDataFire roomno)
+    )
+  (GET "/changeTipFire" [type roomno content]
+     (home/changeTipFire type roomno content)
+    )
+  (GET "/getroomdata" [roomno]
+    (home/getroomdata roomno)
     )
   (GET "/about" [] (about-page)))
 
