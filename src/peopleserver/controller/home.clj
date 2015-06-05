@@ -5,6 +5,7 @@
            )
   (:use compojure.core org.httpkit.server)
   (:require [peopleserver.db.core :as db]
+            [peopleserver.layout :as layout]
             [noir.response :as resp]
             [clj-time.local :as l]
             [clj-time.core :as t]
@@ -26,7 +27,8 @@
                      )
       false)
     ))
-    (resp/json {:success true})
+  (layout/render "about.html")
+    #_(resp/json {:success true})
   )
 
 (defn changeTipFire [type roomno content]
@@ -89,9 +91,9 @@
          todaystr (f/unparse custom-formatter time)
 
          ]
-    ;(resp/json (db/getbigscreendata linenos todaystr))
+    (resp/json (db/getbigscreendata linenos todaystr))
     ;sicktype varchar(1), section varchar(10), patname varchar(50), roomno varchar(10) ,showno varchar(10),  sortno int,stateflag varchar(2),checkdt datetime
-    (resp/json [{:sortcode 1 :sicktype "m" :section "section" :patname "王小明1" :roomname "彩超11F"
+   #_(resp/json [{:sortcode 1 :sicktype "m" :section "section" :patname "王小明1" :roomname "彩超11F"
                  :roomno "12" :showno "A001" :sortno 1 :linenos 1 :stateflag "rd" :checkdt "2015-05-27 10:59:59"}
                 {:sortcode 2 :sicktype "m" :section "section" :patname "王小明2" :roomname "彩超11F"
                  :roomno "12" :showno "A002" :sortno 1 :linenos 2 :stateflag "rd" :checkdt "2015-05-27 10:59:59"}
@@ -107,8 +109,8 @@
          todaystr (f/unparse custom-formatter time)
 
          ]
-    ;(resp/json (db/getroomdata roomno todaystr))
-    (resp/json [{:sortcode 1 :sicktype "m" :section "section" :roomname "彩超11F" :patname "王小明1"
+    (resp/json (db/getroomdata roomno todaystr))
+    #_(resp/json [{:sortcode 1 :sicktype "m" :section "section" :roomname "彩超11F" :patname "王小明1"
                  :roomno "12" :showno "A001" :sortno 1 :linenos 1 :stateflag "ca" :checkdt "2015-05-27 10:59:59"}
                 {:sortcode 2 :sicktype "m" :section "section" :patname "王小明2" :roomname "彩超11F"
                  :roomno "12" :showno "A002" :sortno 1 :linenos 2 :stateflag "rd" :checkdt "2015-05-27 10:59:59"}
@@ -124,9 +126,9 @@
          todaystr (f/unparse custom-formatter time)
 
          ]
-    ;(resp/json (db/getbigscreenpasseddata  linenos todaystr))
+    (resp/json (db/getbigscreenpasseddata  linenos todaystr))
     ;sicktype varchar(1), section varchar(10), patname varchar(50), roomno varchar(10) ,showno varchar(10),  sortno int,stateflag varchar(2),checkdt datetime
-    (resp/json [{:sortcode 3 :sicktype "m" :section "section" :patname "王小明3"
+    #_(resp/json [{:sortcode 3 :sicktype "m" :section "section" :patname "王小明3"
                  :roomno "12" :showno "A003" :sortno 1 :linenos 1 :stateflag "la" :checkdt "2015-05-27 10:59:59"}
                 {:sortcode 2 :sicktype "m" :section "section" :patname "王小明2"
                  :roomno "12" :showno "A003" :sortno 1 :linenos 1 :stateflag "la" :checkdt "2015-05-27 10:59:59"}
