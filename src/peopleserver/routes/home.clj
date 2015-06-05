@@ -26,6 +26,11 @@
   (GET "/changeTipFire" [type roomno content]
      (home/changeTipFire type roomno content)
     )
+
+  (GET "/changeVoiceTimesFire" [totaltimes]
+    (home/changeVoiceTimesFire  totaltimes)
+    )
+
   (GET "/getroomdata" [roomno]
     (home/getroomdata roomno)
     )

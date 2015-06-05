@@ -17,3 +17,6 @@ To start a web server for the application, run:
 ## License
 
 Copyright © 2015 FIXME
+
+
+http://localhost:3000/changeVoiceTimesFire?totaltimes=4
