@@ -43,6 +43,13 @@
     )
 
   )
+(defn getbigscreendataupdate [sortcode]
+
+  (with-db db-sqlserver
+    (exec-raw ["select  * from si_sort where stateflag=? and sortcode=?  " ["rd" sortcode]] :results)
+    )
+
+  )
 (defn getroomdata [roomno time]
 
   (with-db db-sqlserver
@@ -54,6 +61,12 @@
 (defn getbigscreenpasseddata [linenos time]
   (with-db db-sqlserver
     (exec-raw ["select  * from si_sort where stateflag=? and linenos>? and checkdt>=? order by linenos " ["la" linenos time]] :results)
+    )
+
+  )
+(defn getbigscreenpasseddataupdate [sortcode]
+  (with-db db-sqlserver
+    (exec-raw ["select  * from si_sort where stateflag=? and sortcode=?  " ["la" sortcode ]] :results)
     )
 
   )
