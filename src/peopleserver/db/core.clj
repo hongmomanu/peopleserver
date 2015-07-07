@@ -36,10 +36,10 @@
 
 (defqueries "sql/queries.sql" {:connection db-spec})
 
-(defn getbigscreendata [linenos time]
+(defn getbigscreendata [linenos time area]
 
   (with-db db-sqlserver
-    (exec-raw ["select  * from si_sort where stateflag=? and linenos>? and checkdt>=? order by linenos " ["rd" linenos time]] :results)
+    (exec-raw ["select  * from si_sort where stateflag=? and area=? and linenos>? and checkdt>=? order by linenos " ["rd" area linenos time]] :results)
     )
 
   )
@@ -58,9 +58,9 @@
 
   )
 
-(defn getbigscreenpasseddata [linenos time]
+(defn getbigscreenpasseddata [linenos time area]
   (with-db db-sqlserver
-    (exec-raw ["select  * from si_sort where stateflag=? and linenos>? and checkdt>=? order by linenos " ["la" linenos time]] :results)
+    (exec-raw ["select  * from si_sort where stateflag=? and area=? and linenos>? and checkdt>=? order by linenos " ["la" area linenos time ]] :results)
     )
 
   )

@@ -16,13 +16,14 @@
   )
 
 
-(defn loadDataFire [roomno sortcode]
+(defn loadDataFire [roomno sortcode area]
 
-  (println (str "loadDatafire   " roomno ":" sortcode))
+  (println (str "loadDatafire   " roomno ":" sortcode ":" area))
   (future (doseq [channel (keys @websocket/channel-hub)]
 
     (send! channel (json/write-str
                      {:roomno roomno
+                      :area area
                       :sortcode sortcode
                       :type 0
                       }
@@ -102,7 +103,7 @@
 
 
   )
-(defn getbigscreendata[linenos]
+(defn getbigscreendata[linenos area]
 
   (let [
          time (l/local-now)
@@ -110,9 +111,9 @@
          todaystr (f/unparse custom-formatter time)
 
          ]
-    #_(resp/json (db/getbigscreendata linenos todaystr))
+    (resp/json (db/getbigscreendata linenos todaystr area))
     ;sicktype varchar(1), section varchar(10), patname varchar(50), roomno varchar(10) ,showno varchar(10),  sortno int,stateflag varchar(2),checkdt datetime
-    (resp/json [{:sortcode 1 :sicktype "m" :section "section" :patname "王小明1" :roomname "彩超11F"
+    #_(resp/json [{:sortcode 1 :sicktype "m" :section "section" :patname "王小明1" :roomname "彩超11F"
                  :roomno "12" :showno "A001" :sortno 1 :linenos 1 :stateflag "rd" :checkdt "2015-05-27 10:59:59"}
                 {:sortcode 2 :sicktype "m" :section "section" :patname "王小明2" :roomname "彩超11F"
                  :roomno "12" :showno "A002" :sortno 1 :linenos 2 :stateflag "rd" :checkdt "2015-05-27 10:59:59"}
@@ -128,9 +129,9 @@
          todaystr (f/unparse custom-formatter time)
 
          ]
-    #_(resp/json (db/getbigscreendataupdate sortcode))
+    (resp/json (db/getbigscreendataupdate sortcode))
     ;sicktype varchar(1), section varchar(10), patname varchar(50), roomno varchar(10) ,showno varchar(10),  sortno int,stateflag varchar(2),checkdt datetime
-    (resp/json [{:sortcode 1 :sicktype "m" :section "section" :patname "王小明1" :roomname "彩超11F"
+    #_(resp/json [{:sortcode 1 :sicktype "m" :section "section" :patname "王小明1" :roomname "彩超11F"
                  :roomno "12" :showno "A001" :sortno 1 :linenos 1 :stateflag "rd" :checkdt "2015-05-27 10:59:59"}
                 {:sortcode 2 :sicktype "m" :section "section" :patname "王小明2" :roomname "彩超11F"
                  :roomno "12" :showno "A002" :sortno 1 :linenos 2 :stateflag "rd" :checkdt "2015-05-27 10:59:59"}
@@ -146,8 +147,8 @@
          todaystr (f/unparse custom-formatter time)
 
          ]
-    #_(resp/json (db/getroomdata roomno todaystr))
-    (resp/json [{:sortcode 1 :sicktype "m" :section "section" :roomname "彩超11F" :patname "王小明1"
+    (resp/json (db/getroomdata roomno todaystr))
+    #_(resp/json [{:sortcode 1 :sicktype "m" :section "section" :roomname "彩超11F" :patname "王小明1"
                  :roomno "12" :showno "A001" :sortno 1 :linenos 1 :stateflag "ca" :checkdt "2015-05-27 10:59:59"}
                 {:sortcode 2 :sicktype "m" :section "section" :patname "王小明2" :roomname "彩超11F"
                  :roomno "12" :showno "A002" :sortno 1 :linenos 2 :stateflag "rd" :checkdt "2015-05-27 10:59:59"}{:sortcode 2 :sicktype "m" :section "section" :patname "王小明2" :roomname "彩超11F"
@@ -159,7 +160,7 @@
     )
 
   )
-(defn getbigscreenpasseddata [linenos]
+(defn getbigscreenpasseddata [linenos area]
 
   (let [
          time (l/local-now)
@@ -167,13 +168,14 @@
          todaystr (f/unparse custom-formatter time)
 
          ]
-    #_(resp/json (db/getbigscreenpasseddata  linenos todaystr))
+    (resp/json (db/getbigscreenpasseddata  linenos todaystr area))
     ;sicktype varchar(1), section varchar(10), patname varchar(50), roomno varchar(10) ,showno varchar(10),  sortno int,stateflag varchar(2),checkdt datetime
-    (resp/json [{:sortcode 3 :sicktype "m" :section "section" :patname "王小明3"
+    #_(resp/json [{:sortcode 3 :sicktype "m" :section "section" :patname "王小明3"
                  :roomno "12" :showno "A003" :sortno 1 :linenos 1 :stateflag "la" :checkdt "2015-05-27 10:59:59"}
                 {:sortcode 2 :sicktype "m" :section "section" :patname "王小明2"
                  :roomno "12" :showno "A003" :sortno 1 :linenos 1 :stateflag "la" :checkdt "2015-05-27 10:59:59"}
                 {:sortcode 4 :sicktype "m" :section "section" :patname "王小明4"
+                 :roomno "12" :showno "A004" :sortno 1  :linenos 2 :stateflag "la" :checkdt "2015-05-27 10:59:59"}{:sortcode 4 :sicktype "m" :section "section" :patname "王小明4"
                  :roomno "12" :showno "A004" :sortno 1  :linenos 2 :stateflag "la" :checkdt "2015-05-27 10:59:59"}{:sortcode 4 :sicktype "m" :section "section" :patname "王小明4"
                  :roomno "12" :showno "A004" :sortno 1  :linenos 2 :stateflag "la" :checkdt "2015-05-27 10:59:59"}{:sortcode 4 :sicktype "m" :section "section" :patname "王小明4"
                  :roomno "12" :showno "A004" :sortno 1  :linenos 2 :stateflag "la" :checkdt "2015-05-27 10:59:59"}
@@ -189,9 +191,9 @@
          todaystr (f/unparse custom-formatter time)
 
          ]
-    #_(resp/json (db/getbigscreenpasseddataupdate  sortcode ))
+    (resp/json (db/getbigscreenpasseddataupdate  sortcode ))
     ;sicktype varchar(1), section varchar(10), patname varchar(50), roomno varchar(10) ,showno varchar(10),  sortno int,stateflag varchar(2),checkdt datetime
-    (resp/json [{:sortcode 3 :sicktype "m" :section "section" :patname "王小明3"
+    #_(resp/json [{:sortcode 3 :sicktype "m" :section "section" :patname "王小明3"
                  :roomno "12" :showno "A003" :sortno 1 :linenos 1 :stateflag "la" :checkdt "2015-05-27 10:59:59"}
                 {:sortcode 2 :sicktype "m" :section "section" :patname "王小明2"
                  :roomno "12" :showno "A003" :sortno 1 :linenos 1 :stateflag "la" :checkdt "2015-05-27 10:59:59"}

@@ -14,16 +14,16 @@
 
 (defroutes home-routes
   (GET "/" [] (home-page))
-  (GET "/getbigscreendata" [linenos] (home/getbigscreendata linenos))
+  (GET "/getbigscreendata" [linenos area] (home/getbigscreendata linenos area))
   (GET "/getbigscreendataupdate" [sortcode] (home/getbigscreendataupdate sortcode))
-  (GET "/getbigscreenpasseddata" [linenos] (home/getbigscreenpasseddata linenos))
+  (GET "/getbigscreenpasseddata" [linenos area] (home/getbigscreenpasseddata linenos area))
   (GET "/getbigscreenpasseddataupdate" [sortcode] (home/getbigscreenpasseddataupdate sortcode))
   (GET "/maketexttopinyin" [text] (home/maketexttopinyin text))
 
 
 
-  (GET "/loadDataFire" [roomno sortcode]
-    (home/loadDataFire roomno sortcode)
+  (GET "/loadDataFire" [roomno sortcode area]
+    (home/loadDataFire roomno sortcode area)
     )
   (GET "/changeTipFire" [type roomno content]
      (home/changeTipFire type roomno content)
