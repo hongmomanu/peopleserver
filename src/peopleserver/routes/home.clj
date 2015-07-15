@@ -32,8 +32,18 @@
   (GET "/changeVoiceTimesFire" [totaltimes]
     (home/changeVoiceTimesFire  totaltimes)
     )
+
+  (GET "/changeVoiceSpeedFire" [speed area]
+    (home/changeVoiceSpeedFire  speed area)
+    )
+  (GET "/updatesystem" [type]
+    (home/updatesystem  type)
+    )
   (GET "/changeShowLinesFire" [lines]
     (home/changeShowLinesFire  lines)
+    )
+  (GET "/clearsreen" [num]
+    (home/clearsreen  num)
     )
 
   (GET "/getroomdata" [roomno]
