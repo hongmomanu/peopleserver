@@ -53,7 +53,7 @@
 (defn getroomdata [roomno time]
 
   (with-db db-sqlserver
-    (exec-raw ["select top 3 * from si_sort where stateflag in (?,?) and roomno=? and checkdt>=? order by linenos desc " ["ca" "rd" roomno  time]] :results)
+    (exec-raw ["select top 3 * from si_sort where stateflag in (?,?) and roomno=? and checkdt>=? order by linenos  " ["ca" "rd" roomno  time]] :results)
     )
 
   )
