@@ -2,6 +2,8 @@
 
   (:import (net.sourceforge.pinyin4j PinyinHelper)
            (net.sourceforge.pinyin4j.format HanyuPinyinToneType HanyuPinyinOutputFormat)
+           (java.text SimpleDateFormat)
+           (java.util  Date )
            )
   (:use compojure.core org.httpkit.server)
   (:require [peopleserver.db.core :as db]
@@ -160,14 +162,18 @@
 (defn getbigscreendata[linenos area]
 
   (let [
-         time (l/local-now)
-         custom-formatter (f/formatter "yyyy-MM-dd")
-         todaystr (f/unparse custom-formatter time)
+         ;;time (l/local-now)
+         ;;custom-formatter (f/formatter "yyyy-MM-dd")
+         ;;todaystr (f/unparse custom-formatter time)
 
+         df   (new SimpleDateFormat "yyyy-MM-dd")
+         ;;time (l/local-now)
+
+         time1 (.format df (.getTime (new Date)))
          ]
-    #_(resp/json (db/getbigscreendata linenos todaystr area))
+    (resp/json (db/getbigscreendata linenos time1 area))
     ;sicktype varchar(1), section varchar(10), patname varchar(50), roomno varchar(10) ,showno varchar(10),  sortno int,stateflag varchar(2),checkdt datetime
-    (resp/json [{:sortcode 1 :sicktype "m" :section "section" :patname "王小明1" :roomname "彩超11F"
+    #_(resp/json [{:sortcode 1 :sicktype "m" :section "section" :patname "王小明1" :roomname "彩超11F"
                  :roomno "12" :showno "A001" :sortno 1 :linenos 1 :stateflag "rd" :checkdt "2015-05-27 10:59:59"}
                 {:sortcode 2 :sicktype "m" :section "section" :patname "王小明2" :roomname "彩超11F"
                  :roomno "12" :showno "A002" :sortno 1 :linenos 2 :stateflag "rd" :checkdt "2015-05-27 10:59:59"}
@@ -178,14 +184,19 @@
 (defn getbigscreendataupdate[sortcode]
 
   (let [
-         time (l/local-now)
-         custom-formatter (f/formatter "yyyy-MM-dd")
-         todaystr (f/unparse custom-formatter time)
+        ;; time (l/local-now)
+         ;;custom-formatter (f/formatter "yyyy-MM-dd")
+         ;;todaystr (f/unparse custom-formatter time)
+
+         df   (new SimpleDateFormat "yyyy-MM-dd")
+         ;;time (l/local-now)
+
+         time1 (.format df (.getTime (new Date)))
 
          ]
-    #_(resp/json (db/getbigscreendataupdate sortcode))
+    (resp/json (db/getbigscreendataupdate sortcode))
     ;sicktype varchar(1), section varchar(10), patname varchar(50), roomno varchar(10) ,showno varchar(10),  sortno int,stateflag varchar(2),checkdt datetime
-    (resp/json [{:sortcode 1 :sicktype "m" :section "section" :patname "王小明1" :roomname "彩超11F"
+    #_(resp/json [{:sortcode 1 :sicktype "m" :section "section" :patname "王小明1" :roomname "彩超11F"
                  :roomno "12" :showno "A001" :sortno 1 :linenos 1 :stateflag "rd" :checkdt "2015-05-27 10:59:59"}
                 {:sortcode 2 :sicktype "m" :section "section" :patname "王小明2" :roomname "彩超11F"
                  :roomno "12" :showno "A002" :sortno 1 :linenos 2 :stateflag "rd" :checkdt "2015-05-27 10:59:59"}
@@ -196,16 +207,19 @@
 (defn getroomdata [roomno]
 
   (let [
-         time (l/local-now)
-         custom-formatter (f/formatter "yyyy-MM-dd")
-         custom-formatter-hh (f/formatter "yyyy-MM-dd HH:mm:ss")
-         todaystr (f/unparse custom-formatter time)
-         todaystrhh (f/unparse custom-formatter-hh time)
+         df   (new SimpleDateFormat "yyyy-MM-dd")
+         ;;time (l/local-now)
+
+         time1 (.format df (.getTime (new Date)))
+         ;;custom-formatter (f/formatter "yyyy-MM-dd")
+         ;;custom-formatter-hh (f/formatter "yyyy-MM-dd HH:mm:ss")
+         ;;todaystr (f/unparse custom-formatter time)
+         ;;todaystrhh (f/unparse custom-formatter-hh time)
 
          ]
-    (println "ssss:"   time todaystr)
-    #_(resp/json (db/getroomdata roomno todaystr))
-    (resp/json [{:sortcode 1 :sicktype "m" :section "section" :roomname "彩超11F" :patname "王小明1"
+    (println "ssss:"     time1)
+    (resp/json (db/getroomdata roomno time1))
+    #_(resp/json [{:sortcode 1 :sicktype "m" :section "section" :roomname "彩超11F" :patname "王小明1"
                  :roomno "12" :showno "A001" :sortno 1 :linenos 1 :stateflag "rd" :checkdt "2015-05-27 10:59:59"}
                 {:sortcode 2 :sicktype "m" :section "section" :patname "王小明2" :roomname "彩超11F"
                  :roomno "12" :showno "A002" :sortno 1 :linenos 2 :stateflag "ca" :checkdt "2015-05-27 10:59:59"}{:sortcode 2 :sicktype "m" :section "section" :patname "王小明2" :roomname "彩超11F"
@@ -220,14 +234,19 @@
 (defn getbigscreenpasseddata [linenos area]
 
   (let [
-         time (l/local-now)
-         custom-formatter (f/formatter "yyyy-MM-dd")
-         todaystr (f/unparse custom-formatter time)
+         ;;time (l/local-now)
+         ;;custom-formatter (f/formatter "yyyy-MM-dd")
+         ;;todaystr (f/unparse custom-formatter time)
+
+         df   (new SimpleDateFormat "yyyy-MM-dd")
+         ;;time (l/local-now)
+
+         time1 (.format df (.getTime (new Date)))
 
          ]
-    #_(resp/json (db/getbigscreenpasseddata  linenos todaystr area))
+   (resp/json (db/getbigscreenpasseddata  linenos time1 area))
     ;sicktype varchar(1), section varchar(10), patname varchar(50), roomno varchar(10) ,showno varchar(10),  sortno int,stateflag varchar(2),checkdt datetime
-    (resp/json [{:sortcode 3 :sicktype "m" :section "section" :patname "王小明3"
+    #_(resp/json [{:sortcode 3 :sicktype "m" :section "section" :patname "王小明3"
                  :roomno "12" :showno "A003" :sortno 1 :linenos 1 :stateflag "la" :checkdt "2015-05-27 10:59:59"}
                 {:sortcode 2 :sicktype "m" :section "section" :patname "王小明2"
                  :roomno "12" :showno "A003" :sortno 1 :linenos 1 :stateflag "la" :checkdt "2015-05-27 10:59:59"}
@@ -248,9 +267,9 @@
          todaystr (f/unparse custom-formatter time)
 
          ]
-    #_(resp/json (db/getbigscreenpasseddataupdate  sortcode ))
+    (resp/json (db/getbigscreenpasseddataupdate  sortcode ))
     ;sicktype varchar(1), section varchar(10), patname varchar(50), roomno varchar(10) ,showno varchar(10),  sortno int,stateflag varchar(2),checkdt datetime
-    (resp/json [{:sortcode 3 :sicktype "m" :section "section" :patname "王小明3"
+    #_(resp/json [{:sortcode 3 :sicktype "m" :section "section" :patname "王小明3"
                  :roomno "12" :showno "A003" :sortno 1 :linenos 1 :stateflag "la" :checkdt "2015-05-27 10:59:59"}
                 {:sortcode 2 :sicktype "m" :section "section" :patname "王小明2"
                  :roomno "12" :showno "A003" :sortno 1 :linenos 1 :stateflag "la" :checkdt "2015-05-27 10:59:59"}
