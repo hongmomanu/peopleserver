@@ -3,7 +3,7 @@
   (:import (net.sourceforge.pinyin4j PinyinHelper)
            (net.sourceforge.pinyin4j.format HanyuPinyinToneType HanyuPinyinOutputFormat)
            (java.text SimpleDateFormat)
-           (java.util  Date )
+           (java.util  Date Calendar)
            )
   (:use compojure.core org.httpkit.server)
   (:require [peopleserver.db.core :as db]
@@ -157,6 +157,20 @@
     (resp/json (clojure.string/join  (map #(str (makepindetail %)) text) ))
 
 
+
+  )
+(defn getnewestwaitingstatus [area]
+  (let [
+         df   (new SimpleDateFormat "yyyy-MM-dd")
+         today (new Date)
+         cal (Calendar/getInstance)
+         test (.add cal Calendar/DAY_OF_MONTH 1)
+         todaystr (.format df (.getTime today))
+         tomorrorstr (.format df (->(.getTime cal)(.getTime)))
+         ]
+
+    (resp/json {:todaystr todaystr :tomorrorstr tomorrorstr})
+    )
 
   )
 (defn getbigscreendata[linenos area]

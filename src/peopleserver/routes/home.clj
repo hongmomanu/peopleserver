@@ -18,6 +18,9 @@
   (GET "/getbigscreendataupdate" [sortcode] (home/getbigscreendataupdate sortcode))
   (GET "/getbigscreenpasseddata" [linenos area] (home/getbigscreenpasseddata linenos area))
   (GET "/getbigscreenpasseddataupdate" [sortcode] (home/getbigscreenpasseddataupdate sortcode))
+  (GET "/getnewestwaitingstatus" [area] (home/getnewestwaitingstatus area))
+
+
   (GET "/maketexttopinyin" [text] (home/maketexttopinyin text))
 
 

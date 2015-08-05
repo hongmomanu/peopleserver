@@ -58,6 +58,15 @@
 
   )
 
+(defn getnewestwaitingstatus [area today tomorrow]
+
+  (with-db db-sqlserver
+    (exec-raw ["select  left(showno,1),max(showno) from si_sort where area=? and checkdt>? and checkdt<? and stateflag=? group by left(showno,1)  "
+               [area today tomorrow "ca" ]] :results)
+    )
+
+  )
+
 (defn getbigscreenpasseddata [linenos time area]
   (with-db db-sqlserver
     (exec-raw ["select  * from si_sort where stateflag=? and area=? and linenos>? and checkdt>=? order by linenos " ["la" area linenos time ]] :results)
