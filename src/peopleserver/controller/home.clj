@@ -169,7 +169,7 @@
          tomorrorstr (.format df (->(.getTime cal)(.getTime)))
          ]
 
-    (resp/json {:todaystr todaystr :tomorrorstr tomorrorstr})
+    (resp/json (db/getnewestwaitingstatus area todaystr tomorrorstr))
     )
 
   )
@@ -193,6 +193,19 @@
                  :roomno "12" :showno "A002" :sortno 1 :linenos 2 :stateflag "rd" :checkdt "2015-05-27 10:59:59"}
                 ])
     )
+
+  )
+(defn getdatabysortcodeandtype [sortcode type]
+  (resp/json (db/getdatabysortcodeandtype sortcode type))
+  #_(resp/json [{:sortcode 45175 :sicktype "m" :section "section" :patname "王小明1" :roomname "彩超11F"
+                 :roomno "12" :showno "A001" :sortno 1 :linenos 1 :stateflag type :checkdt "2015-05-27 10:59:59"}
+                ])
+  )
+(defn getdatabysortcode [sortcode]
+  #_(resp/json [{:sortcode 45175 :sicktype "m" :section "section" :patname "王小明1" :roomname "彩超11F"
+                 :roomno "12" :showno "A001" :sortno 1 :linenos 1 :stateflag "rd" :checkdt "2015-05-27 10:59:59"}
+                ])
+  (resp/json (db/getdatabysortcode sortcode))
 
   )
 (defn getbigscreendataupdate[sortcode]

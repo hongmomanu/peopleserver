@@ -61,8 +61,8 @@
 (defn getnewestwaitingstatus [area today tomorrow]
 
   (with-db db-sqlserver
-    (exec-raw ["select  left(showno,1),max(showno) from si_sort where area=? and checkdt>? and checkdt<? and stateflag=? group by left(showno,1)  "
-               [area today tomorrow "ca" ]] :results)
+    (exec-raw ["select  left(showno,1) as name,max(showno) as value from si_sort where area=? and checkdt>? and checkdt<? and stateflag in (?,?) group by left(showno,1)  "
+               [area today tomorrow "ca" "fn" ]] :results)
     )
 
   )
@@ -78,6 +78,16 @@
     (exec-raw ["select  * from si_sort where stateflag=? and sortcode=?  " ["la" sortcode ]] :results)
     )
 
+  )
+(defn getdatabysortcodeandtype [sortcode type]
+  (with-db db-sqlserver
+    (exec-raw ["select  * from si_sort where stateflag=? and sortcode=?  " [type sortcode ]] :results)
+    )
+  )
+(defn getdatabysortcode [sortcode ]
+  (with-db db-sqlserver
+    (exec-raw ["select  * from si_sort where  sortcode=?  " [ sortcode ]] :results)
+    )
   )
 
 

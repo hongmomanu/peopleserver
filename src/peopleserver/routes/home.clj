@@ -31,6 +31,13 @@
   (GET "/changeTipFire" [type roomno content]
      (home/changeTipFire type roomno content)
     )
+  (GET "/getdatabysortcodeandtype" [sortcode type]
+     (home/getdatabysortcodeandtype sortcode type)
+    )
+
+  (GET "/getdatabysortcode" [sortcode ]
+     (home/getdatabysortcode sortcode)
+    )
 
   (GET "/changeVoiceTimesFire" [totaltimes]
     (home/changeVoiceTimesFire  totaltimes)
