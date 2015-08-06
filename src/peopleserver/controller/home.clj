@@ -202,10 +202,11 @@
                 ])
   )
 (defn getdatabysortcode [sortcode]
-  #_(resp/json [{:sortcode 45175 :sicktype "m" :section "section" :patname "王小明1" :roomname "彩超11F"
+
+  (resp/json (db/getdatabysortcode sortcode))
+  #_(resp/json [{:sortcode 45190 :sicktype "m" :section "section" :patname "王明王明" :roomname "彩超11F"
                  :roomno "12" :showno "A001" :sortno 1 :linenos 1 :stateflag "rd" :checkdt "2015-05-27 10:59:59"}
                 ])
-  (resp/json (db/getdatabysortcode sortcode))
 
   )
 (defn getbigscreendataupdate[sortcode]

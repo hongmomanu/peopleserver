@@ -61,8 +61,8 @@
 (defn getnewestwaitingstatus [area today tomorrow]
 
   (with-db db-sqlserver
-    (exec-raw ["select  left(showno,1) as name,max(showno) as value from si_sort where area=? and checkdt>? and checkdt<? and stateflag in (?,?) group by left(showno,1)  "
-               [area today tomorrow "ca" "fn" ]] :results)
+    (exec-raw ["select  left(showno,1) as name,max(showno) as value from si_sort where area=? and checkdt>? and checkdt<? and stateflag =? group by left(showno,1)  "
+               [area today tomorrow "rd"  ]] :results)
     )
 
   )
