@@ -6,6 +6,7 @@
            (java.util  Date Calendar)
            )
   (:use compojure.core org.httpkit.server)
+  (:use [taoensso.timbre :only [trace debug info warn error fatal]])
   (:require [peopleserver.db.core :as db]
             [peopleserver.layout :as layout]
             [noir.response :as resp]
@@ -21,36 +22,43 @@
 
 (defn loadDataFire [roomno sortcode area]
 
-  (println (str "loadDatafire   " roomno ":" sortcode ":" area))
+
+
   (future (doseq [channel (keys @websocket/channel-hub)]
 
-    (send! channel (json/write-str
-                     {:roomno roomno
-                      :area area
-                      :sortcode sortcode
-                      :type 0
-                      }
-                     )
-      false)
-    ))
-  (layout/render "about.html")
-    #_(resp/json {:success true})
+            (send! channel (json/write-str
+                             {:roomno roomno
+                              :area area
+                              :sortcode sortcode
+                              :type 0
+                              }
+                             )
+              false)
+            ))
+
+  ;(future
+  (info (str "loadDatafire   " roomno ":" sortcode ":" area))
+  ;(println "ok")
+  (layout/render "hello.html")
+
   )
 
 (defn changeTipFire [type roomno content]
 
   ;;(println "changeTipFire:" (str(putf8/utf8-str content)))
-  (println "changeTipFire:2222")
+
   (future (doseq [channel (keys @websocket/channel-hub)]
-    (println channel)
-    (send! channel (json/write-str
-                     {:roomno roomno
-                      :type type
-                      :content content
-                      }
-                     )
-      false)
-    ))
+
+            (send! channel (json/write-str
+                             {:roomno roomno
+                              :type type
+                              :content content
+                              }
+                             )
+              false)
+            ))
+
+  (info "changeTipFire:2222")
   (resp/json {:success true})
 
 
@@ -58,34 +66,37 @@
 
 (defn changeVoiceTimesFire [totaltimes]
 
-
   (future (doseq [channel (keys @websocket/channel-hub)]
 
-    (send! channel (json/write-str
-                     {
-                      :type 3
-                      :totaltimes totaltimes
-                      }
-                     )
-      false)
-    ))
+            (send! channel (json/write-str
+                             {
+                               :type 3
+                               :totaltimes totaltimes
+                               }
+                             )
+              false)
+            ))
+
+  (info "changeVoiceTimesFire")
   (resp/json {:success true})
 
 
   )
 (defn changeShowLinesFire [lines]
 
-
   (future (doseq [channel (keys @websocket/channel-hub)]
 
-    (send! channel (json/write-str
-                     {
-                      :type 4
-                      :showlines lines
-                      }
-                     )
-      false)
-    ))
+            (send! channel (json/write-str
+                             {
+                               :type 4
+                               :showlines lines
+                               }
+                             )
+              false)
+            ))
+
+  (info "changeShowLinesFire" lines)
+
   (resp/json {:success true})
 
 
@@ -95,49 +106,55 @@
 
   (future (doseq [channel (keys @websocket/channel-hub)]
 
-    (send! channel (json/write-str
-                     {
-                      :type 5
-                      :area area
-                      :speed speed
-                      }
-                     )
-      false)
-    ))
+            (send! channel (json/write-str
+                             {
+                               :type 5
+                               :area area
+                               :speed speed
+                               }
+                             )
+              false)
+            ))
+
+  (info "changeVoiceSpeedFire" speed)
+
   (resp/json {:success true})
 
 
   )
 (defn clearsreen [num]
 
-
   (future (doseq [channel (keys @websocket/channel-hub)]
 
-    (send! channel (json/write-str
-                     {
-                      :type 8
-                      :num num
-                      }
-                     )
-      false)
-    ))
+            (send! channel (json/write-str
+                             {
+                               :type 8
+                               :num num
+                               }
+                             )
+              false)
+            ))
+
+  (info "clearsreen" num)
+
   (resp/json {:success true})
 
 
   )
 (defn updatesystem [type]
 
-
   (future (doseq [channel (keys @websocket/channel-hub)]
 
-    (send! channel (json/write-str
-                     {
-                      :type (if (= type "big") 6 7)
+            (send! channel (json/write-str
+                             {
+                               :type (if (= type "big") 6 7)
 
-                      }
-                     )
-      false)
-    ))
+                               }
+                             )
+              false)
+            ))
+
+  (info "updatesystem" type)
   (resp/json {:success true})
 
 
@@ -204,8 +221,8 @@
 (defn getdatabysortcode [sortcode]
 
   (resp/json (db/getdatabysortcode sortcode))
-  #_(resp/json [{:sortcode 45190 :sicktype "m" :section "section" :patname "王明王明" :roomname "彩超11F"
-                 :roomno "12" :showno "A001" :sortno 1 :linenos 1 :stateflag "rd" :checkdt "2015-05-27 10:59:59"}
+  #_(resp/json [{:sortcode 45190 :sicktype "m" :section "section" :patname "王明" :roomname "1室"
+                 :roomno "12" :showno "A002" :sortno 1 :linenos 1 :stateflag "rd" :checkdt "2015-05-27 10:59:59"}
                 ])
 
   )
@@ -245,7 +262,7 @@
          ;;todaystrhh (f/unparse custom-formatter-hh time)
 
          ]
-    (println "ssss:"     time1)
+    ;(println "ssss:"     time1)
     (resp/json (db/getroomdata roomno time1))
     #_(resp/json [{:sortcode 1 :sicktype "m" :section "section" :roomname "彩超11F" :patname "王小明1"
                  :roomno "12" :showno "A001" :sortno 1 :linenos 1 :stateflag "rd" :checkdt "2015-05-27 10:59:59"}
