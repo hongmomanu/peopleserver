@@ -8,6 +8,7 @@
 )
 
 (def channel-hub (atom {}))
+(def channel-hub-key (atom {}))
 
 
 (defn handler [request]
@@ -17,7 +18,8 @@
     (on-receive channel (fn [data]
 
                           (swap! channel-hub assoc channel request)
-                          (println data)
+                          (println data (get data "content"))
+
                                ;(println request)
                               ;(send! channel data)
                               ))
