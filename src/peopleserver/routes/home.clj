@@ -6,8 +6,11 @@
             [clojure.java.io :as io]))
 
 (defn home-page []
-  (layout/render
-    "home.html" {:docs (-> "docs/docs.md" io/resource slurp)}))
+  ;(ok  {:success true})
+  (layout/render "hello.html")
+  #_(layout/render
+    "home.html" {:docs (-> "docs/docs.md" io/resource slurp)})
+  )
 
 (defn about-page []
   (layout/render "about.html"))
@@ -43,8 +46,8 @@
     (home/changeVoiceTimesFire  totaltimes)
     )
 
-  (GET "/changeVoiceSpeedFire" [speed area]
-    (home/changeVoiceSpeedFire  speed area)
+  (GET "/changeVoiceSpeedFire" [speed area sptype]
+    (home/changeVoiceSpeedFire  speed area sptype)
     )
   (GET "/updatesystem" [type]
     (home/updatesystem  type)

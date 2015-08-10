@@ -101,7 +101,7 @@
 
 
   )
-(defn changeVoiceSpeedFire [speed area]
+(defn changeVoiceSpeedFire [speed area sptype]
 
 
   (future (doseq [channel (keys @websocket/channel-hub)]
@@ -110,6 +110,7 @@
                              {
                                :type 5
                                :area area
+                               :sptype sptype
                                :speed speed
                                }
                              )
@@ -187,6 +188,7 @@
          ]
 
     (resp/json (db/getnewestwaitingstatus area todaystr tomorrorstr))
+    #_(resp/json [{:name "D" :value "D301"}])
     )
 
   )
@@ -202,11 +204,11 @@
 
          time1 (.format df (.getTime (new Date)))
          ]
-    (resp/json (db/getbigscreendata linenos time1 area))
+    #_(resp/json (db/getbigscreendata linenos time1 area))
     ;sicktype varchar(1), section varchar(10), patname varchar(50), roomno varchar(10) ,showno varchar(10),  sortno int,stateflag varchar(2),checkdt datetime
-    #_(resp/json [{:sortcode 1 :sicktype "m" :section "section" :patname "王小明1" :roomname "彩超11F"
+    (resp/json [{:sortcode 1 :sicktype "m" :section "section" :patname "王小明" :roomname "彩超11F"
                  :roomno "12" :showno "A001" :sortno 1 :linenos 1 :stateflag "rd" :checkdt "2015-05-27 10:59:59"}
-                {:sortcode 2 :sicktype "m" :section "section" :patname "王小明2" :roomname "彩超11F"
+                {:sortcode 2 :sicktype "m" :section "section" :patname "王小明" :roomname "彩超11F"
                  :roomno "12" :showno "A002" :sortno 1 :linenos 2 :stateflag "rd" :checkdt "2015-05-27 10:59:59"}
                 ])
     )
@@ -221,7 +223,7 @@
 (defn getdatabysortcode [sortcode]
 
   (resp/json (db/getdatabysortcode sortcode))
-  #_(resp/json [{:sortcode 45190 :sicktype "m" :section "section" :patname "王明" :roomname "1室"
+  #_(resp/json [{:sortcode 45190 :sicktype "m" :section "section" :patname "司马相如" :roomname "1室"
                  :roomno "12" :showno "A002" :sortno 1 :linenos 1 :stateflag "rd" :checkdt "2015-05-27 10:59:59"}
                 ])
 
@@ -289,7 +291,7 @@
          time1 (.format df (.getTime (new Date)))
 
          ]
-   (resp/json (db/getbigscreenpasseddata  linenos time1 area))
+    (resp/json (db/getbigscreenpasseddata  linenos time1 area))
     ;sicktype varchar(1), section varchar(10), patname varchar(50), roomno varchar(10) ,showno varchar(10),  sortno int,stateflag varchar(2),checkdt datetime
     #_(resp/json [{:sortcode 3 :sicktype "m" :section "section" :patname "王小明3"
                  :roomno "12" :showno "A003" :sortno 1 :linenos 1 :stateflag "la" :checkdt "2015-05-27 10:59:59"}
