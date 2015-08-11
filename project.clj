@@ -28,7 +28,10 @@
                  [http-kit "2.1.16"]
                  [clj-time "0.8.0"]
                  [com.belerweb/pinyin4j "2.5.0"]
-                 [cheshire "5.1.1"]
+                 [cheshire "5.5.0"]
+
+
+                 [pjstadig/utf8 "0.1.0"]
 
                  [lib-noir "0.9.1"]
                  [korma "0.4.0"]
@@ -39,6 +42,7 @@
   :uberjar-name "peopleserver.jar"
   :jvm-opts ["-server"]
 
+;;"-Dfile.encoding=GBK"
 ;;enable to start the nREPL server when the application launches
 ;:env {:repl-port 7001}
 
