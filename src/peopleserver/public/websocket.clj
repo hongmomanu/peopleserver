@@ -17,8 +17,9 @@
     ;;(swap! channel-hub assoc channel nil)
     (on-receive channel (fn [data]
 
-                          (swap! channel-hub assoc channel request)
-                          (println data (get data "content"))
+                          ;(swap! channel-hub assoc channel request)
+                          (swap! channel-hub assoc channel (json/read-str data))
+                          (println data (get (json/read-str data) "content"))
 
                                ;(println request)
                               ;(send! channel data)

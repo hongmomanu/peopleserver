@@ -14,11 +14,75 @@
             [clj-time.core :as t]
             [pjstadig.utf8 :as putf8]
             [clj-time.format :as f]
+            [cheshire.core :refer :all]
             [clojure.data.json :as json]
             [peopleserver.public.websocket :as websocket]
             )
   )
 
+(declare getdatabysortcode getroomdatanores)
+
+(defn loadDataFireNew [roomno sortcode area]
+
+
+  (let [
+
+         bigdata (getdatabysortcode sortcode)
+         roomdata (getroomdatanores roomno)
+         ;num (get  (get @websocket/channel-hub channel) "content")
+         ]
+
+    (future (doseq [channel (keys @websocket/channel-hub)]
+              ;;(println 1212212)
+                ;(println (generate-string (vec bigdata)))
+                (when (= (get  (get @websocket/channel-hub channel) "content") roomno)
+                  (send! channel (generate-string
+                                   {:roomno roomno
+                                    :area area
+                                    :data  (vec roomdata)
+                                    :type 0
+                                    }
+                                   )
+                    false)
+                  )
+                (when (= (get  (get @websocket/channel-hub channel) "content") area)
+
+                  (send! channel (generate-string
+                                   {
+                                     :area area
+                                     :data  (vec bigdata)
+                                     :type 0
+                                     }
+                                   )
+                    false)
+
+
+                  )
+
+
+              #_(send! channel (json/write-str
+                                 {:roomno roomno
+                                  :area area
+                                  :sortcode sortcode
+                                  :roomdata (json/write-str(getroomdata roomno))
+                                  :data (json/write-str (getdatabysortcode sortcode))
+                                  :type 0
+                                  }
+                                 )
+                  false)
+              ))
+
+    )
+
+
+
+
+  ;(future
+  (info (str "loadDatafire   " roomno ":" sortcode ":" area))
+  ;(println "ok")
+  (layout/render "hello.html")
+
+  )
 
 (defn loadDataFire [roomno sortcode area]
 
@@ -192,6 +256,7 @@
     )
 
   )
+
 (defn getbigscreendata[linenos area]
 
   (let [
@@ -204,9 +269,9 @@
 
          time1 (.format df (.getTime (new Date)))
          ]
-    #_(resp/json (db/getbigscreendata linenos time1 area))
+    (resp/json (db/getbigscreendata linenos time1 area))
     ;sicktype varchar(1), section varchar(10), patname varchar(50), roomno varchar(10) ,showno varchar(10),  sortno int,stateflag varchar(2),checkdt datetime
-    (resp/json [{:sortcode 1 :sicktype "m" :section "section" :patname "王小明" :roomname "彩超11F"
+    #_(resp/json [{:sortcode 1 :sicktype "m" :section "section" :patname "王小明" :roomname "彩超11F"
                  :roomno "12" :showno "A001" :sortno 1 :linenos 1 :stateflag "rd" :checkdt "2015-05-27 10:59:59"}
                 {:sortcode 2 :sicktype "m" :section "section" :patname "王小明" :roomname "彩超11F"
                  :roomno "12" :showno "A002" :sortno 1 :linenos 2 :stateflag "rd" :checkdt "2015-05-27 10:59:59"}
@@ -215,17 +280,20 @@
 
   )
 (defn getdatabysortcodeandtype [sortcode type]
-  (resp/json (db/getdatabysortcodeandtype sortcode type))
-  #_(resp/json [{:sortcode 45175 :sicktype "m" :section "section" :patname "王小明1" :roomname "彩超11F"
+  #_(resp/json (db/getdatabysortcodeandtype sortcode type))
+  ;(println "")
+  (resp/json [{:sortcode 45175 :sicktype "m" :section "section" :patname "王小明1" :roomname "彩超11F"
                  :roomno "12" :showno "A001" :sortno 1 :linenos 1 :stateflag type :checkdt "2015-05-27 10:59:59"}
                 ])
   )
 (defn getdatabysortcode [sortcode]
 
-  (resp/json (db/getdatabysortcode sortcode))
-  #_(resp/json [{:sortcode 45190 :sicktype "m" :section "section" :patname "司马相如" :roomname "1室"
-                 :roomno "12" :showno "A002" :sortno 1 :linenos 1 :stateflag "rd" :checkdt "2015-05-27 10:59:59"}
-                ])
+  ;(resp/json (db/getdatabysortcode sortcode))
+  (db/getdatabysortcode sortcode)
+  #_[{:sortcode 45190 :sicktype "m" :section "section" :patname "司马相如" :roomname "1室"
+    :roomno "12" :showno "A002" :sortno 1 :linenos 1 :stateflag "rd" :checkdt "2015-05-27 10:59:59"}
+   ]
+  ;(resp/json )
 
   )
 (defn getbigscreendataupdate[sortcode]
@@ -266,15 +334,43 @@
          ]
     ;(println "ssss:"     time1)
     (resp/json (db/getroomdata roomno time1))
+
     #_(resp/json [{:sortcode 1 :sicktype "m" :section "section" :roomname "彩超11F" :patname "王小明1"
-                 :roomno "12" :showno "A001" :sortno 1 :linenos 1 :stateflag "rd" :checkdt "2015-05-27 10:59:59"}
-                {:sortcode 2 :sicktype "m" :section "section" :patname "王小明2" :roomname "彩超11F"
-                 :roomno "12" :showno "A002" :sortno 1 :linenos 2 :stateflag "ca" :checkdt "2015-05-27 10:59:59"}{:sortcode 2 :sicktype "m" :section "section" :patname "王小明2" :roomname "彩超11F"
-                 :roomno "12" :showno "A003" :sortno 1 :linenos 2 :stateflag "rd" :checkdt "2015-05-27 10:59:59"}{:sortcode 2 :sicktype "m" :section "section" :patname "王小明2" :roomname "彩超11F"
-                 :roomno "12" :showno "A004" :sortno 1 :linenos 2 :stateflag "rd" :checkdt "2015-05-27 10:59:59"}{:sortcode 2 :sicktype "m" :section "section" :patname "王小明2" :roomname "彩超11F"
-                 :roomno "12" :showno "A005" :sortno 1 :linenos 2 :stateflag "rd" :checkdt "2015-05-27 10:59:59"}{:sortcode 2 :sicktype "m" :section "section" :patname "王小明2" :roomname "彩超11F"
-                 :roomno "12" :showno "A006" :sortno 1 :linenos 2 :stateflag "rd" :checkdt "2015-05-27 10:59:59"}
-                ])
+    :roomno "12" :showno "A001" :sortno 1 :linenos 1 :stateflag "rd" :checkdt "2015-05-27 10:59:59"}
+    {:sortcode 2 :sicktype "m" :section "section" :patname "王小明2" :roomname "彩超11F"
+     :roomno "12" :showno "A002" :sortno 1 :linenos 2 :stateflag "ca" :checkdt "2015-05-27 10:59:59"}{:sortcode 2 :sicktype "m" :section "section" :patname "王小明2" :roomname "彩超11F"
+                                                                                                      :roomno "12" :showno "A003" :sortno 1 :linenos 2 :stateflag "rd" :checkdt "2015-05-27 10:59:59"}{:sortcode 2 :sicktype "m" :section "section" :patname "王小明2" :roomname "彩超11F"
+                                                                                                                                                                                                       :roomno "12" :showno "A004" :sortno 1 :linenos 2 :stateflag "rd" :checkdt "2015-05-27 10:59:59"}{:sortcode 2 :sicktype "m" :section "section" :patname "王小明2" :roomname "彩超11F"
+                                                                                                                                                                                                                                                                                                        :roomno "12" :showno "A005" :sortno 1 :linenos 2 :stateflag "rd" :checkdt "2015-05-27 10:59:59"}{:sortcode 2 :sicktype "m" :section "section" :patname "王小明2" :roomname "彩超11F"
+                                                                                                                                                                                                                                                                                                                                                                                                         :roomno "12" :showno "A006" :sortno 1 :linenos 2 :stateflag "rd" :checkdt "2015-05-27 10:59:59"}
+    ])
+    )
+
+  )
+(defn getroomdatanores [roomno]
+
+  (let [
+         df   (new SimpleDateFormat "yyyy-MM-dd")
+         ;;time (l/local-now)
+
+         time1 (.format df (.getTime (new Date)))
+         ;;custom-formatter (f/formatter "yyyy-MM-dd")
+         ;;custom-formatter-hh (f/formatter "yyyy-MM-dd HH:mm:ss")
+         ;;todaystr (f/unparse custom-formatter time)
+         ;;todaystrhh (f/unparse custom-formatter-hh time)
+
+         ]
+    ;;(println "ssss:"     time1)
+    (db/getroomdata roomno time1)
+
+    #_[{:sortcode 1 :sicktype "m" :section "section" :roomname "彩超11F" :patname "王明1"
+    :roomno "12" :showno "A001" :sortno 1 :linenos 1 :stateflag "rd" :checkdt "2015-05-27 10:59:59"}
+    {:sortcode 2 :sicktype "m" :section "section" :patname "王明2" :roomname "彩超11F"
+     :roomno "12" :showno "A002" :sortno 1 :linenos 2 :stateflag "ca" :checkdt "2015-05-27 10:59:59"}
+     {:sortcode 2 :sicktype "m" :section "section" :patname "王小明3" :roomname "彩超12F"
+      :roomno "12" :showno "A003" :sortno 1 :linenos 2 :stateflag "rd" :checkdt "2015-05-27 10:59:59"}
+
+    ]
     )
 
   )

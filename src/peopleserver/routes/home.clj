@@ -29,7 +29,8 @@
 
 
   (GET "/loadDataFire" [roomno sortcode area]
-    (home/loadDataFire roomno sortcode area)
+    ;(home/loadDataFire roomno sortcode area)
+    (home/loadDataFireNew roomno sortcode area)
     )
   (GET "/changeTipFire" [type roomno content]
      (home/changeTipFire type roomno content)
