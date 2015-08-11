@@ -20,7 +20,7 @@
             )
   )
 
-(declare getdatabysortcode getroomdatanores)
+(declare getdatabysortcode getroomdatanores getnewestwaitingstatusnores)
 
 (defn loadDataFireNew [roomno sortcode area]
 
@@ -29,6 +29,7 @@
 
          bigdata (getdatabysortcode sortcode)
          roomdata (getroomdatanores roomno)
+         status (getnewestwaitingstatusnores area)
          ;num (get  (get @websocket/channel-hub channel) "content")
          ]
 
@@ -51,6 +52,7 @@
                                    {
                                      :area area
                                      :data  (vec bigdata)
+                                     :newstatus status
                                      :type 0
                                      }
                                    )
@@ -257,6 +259,21 @@
 
   )
 
+(defn getnewestwaitingstatusnores [area]
+  (let [
+         df   (new SimpleDateFormat "yyyy-MM-dd")
+         today (new Date)
+         cal (Calendar/getInstance)
+         test (.add cal Calendar/DAY_OF_MONTH 1)
+         todaystr (.format df (.getTime today))
+         tomorrorstr (.format df (->(.getTime cal)(.getTime)))
+         ]
+
+    (db/getnewestwaitingstatus area todaystr tomorrorstr)
+    #_(resp/json [{:name "D" :value "D301"}])
+    )
+
+  )
 (defn getbigscreendata[linenos area]
 
   (let [
